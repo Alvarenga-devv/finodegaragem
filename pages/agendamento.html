@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agendar horário | Fino de Garagem</title>
+<meta name="description" content="Agende seu horário na Barbearia Fino de Garagem em poucos passos." />
+<link rel="icon" href="../assets/logo.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand">
+      <img src="../assets/logo.png" alt="Fino de Garagem" class="brand-logo-img sidebar" />
+      <span class="brand-name">FINO DE <span>GARAGEM</span></span>
+    </a>
+    <nav class="main-nav"><a href="../index.html">Início</a></nav>
+  </div>
+</header>
+
+<div class="booking-shell">
+  <h2 class="text-center" style="font-size:30px;margin-bottom:28px;">Agendar horário</h2>
+
+  <div class="stepper">
+    <div class="step" data-step="1"><div class="dot">1</div><span class="label">Serviço</span></div>
+    <div class="step" data-step="2"><div class="dot">2</div><span class="label">Profissional</span></div>
+    <div class="step" data-step="3"><div class="dot">3</div><span class="label">Data</span></div>
+    <div class="step" data-step="4"><div class="dot">4</div><span class="label">Horário</span></div>
+    <div class="step" data-step="5"><div class="dot">5</div><span class="label">Confirmar</span></div>
+  </div>
+
+  <!-- Passo 1 -->
+  <section class="booking-step" data-step="1">
+    <h3 style="font-family:var(--font-body);font-size:16px;text-transform:none;color:var(--bone);">Escolha o serviço</h3>
+    <div class="option-grid" id="serviceOptions"></div>
+    <div class="booking-nav">
+      <span></span>
+      <button class="btn btn-primary" id="toStep2" disabled>Continuar</button>
+    </div>
+  </section>
+
+  <!-- Passo 2 -->
+  <section class="booking-step hide" data-step="2">
+    <h3 style="font-family:var(--font-body);font-size:16px;text-transform:none;color:var(--bone);">Escolha o profissional</h3>
+    <div class="option-grid" id="professionalOptions"></div>
+    <div class="booking-nav">
+      <button class="btn btn-outline" id="backStep1">Voltar</button>
+      <button class="btn btn-primary" id="toStep3" disabled>Continuar</button>
+    </div>
+  </section>
+
+  <!-- Passo 3 -->
+  <section class="booking-step hide" data-step="3">
+    <h3 style="font-family:var(--font-body);font-size:16px;text-transform:none;color:var(--bone);">Escolha a data</h3>
+    <div class="option-grid" style="grid-template-columns:repeat(4,1fr);" id="dateOptions"></div>
+    <div class="booking-nav">
+      <button class="btn btn-outline" id="backStep2">Voltar</button>
+      <button class="btn btn-primary" id="toStep4" disabled>Continuar</button>
+    </div>
+  </section>
+
+  <!-- Passo 4 -->
+  <section class="booking-step hide" data-step="4">
+    <h3 style="font-family:var(--font-body);font-size:16px;text-transform:none;color:var(--bone);">Escolha o horário</h3>
+    <div class="slots-grid" id="slotOptions"></div>
+    <div class="empty-state hide" id="slotsEmpty">
+      <div class="icon">🗓️</div>
+      <p>Não há horários disponíveis nesta data para este profissional. Escolha outra data.</p>
+    </div>
+    <div class="booking-nav">
+      <button class="btn btn-outline" id="backStep3">Voltar</button>
+      <button class="btn btn-primary" id="toStep5" disabled>Continuar</button>
+    </div>
+  </section>
+
+  <!-- Passo 5 -->
+  <section class="booking-step hide" data-step="5">
+    <h3 style="font-family:var(--font-body);font-size:16px;text-transform:none;color:var(--bone);">Confirme seu agendamento</h3>
+    <div class="summary-card">
+      <div class="summary-row"><span class="label">Serviço</span><span class="value" id="summaryService"></span></div>
+      <div class="summary-row"><span class="label">Profissional</span><span class="value" id="summaryProfessional"></span></div>
+      <div class="summary-row"><span class="label">Data</span><span class="value" id="summaryDate"></span></div>
+      <div class="summary-row"><span class="label">Horário</span><span class="value" id="summaryTime"></span></div>
+      <div class="summary-row total"><span class="label">Valor</span><span class="value" id="summaryPrice"></span></div>
+    </div>
+
+    <h3 style="font-family:var(--font-body);font-size:16px;text-transform:none;color:var(--bone);margin-top:24px;">Forma de pagamento</h3>
+    <div class="pay-methods">
+      <label class="option-card"><input type="radio" name="paymentMethod" value="local" checked style="margin-bottom:8px;" /><h4>Na barbearia</h4><span class="small">Dinheiro, pix ou cartão no local</span></label>
+      <label class="option-card"><input type="radio" name="paymentMethod" value="pix" style="margin-bottom:8px;" /><h4>Pix antecipado</h4><span class="small">Pague agora via Pix</span></label>
+      <label class="option-card"><input type="radio" name="paymentMethod" value="cartao" style="margin-bottom:8px;" /><h4>Cartão online</h4><span class="small">Checkout online</span></label>
+    </div>
+
+    <div class="booking-nav">
+      <button class="btn btn-outline" id="backStep4">Voltar</button>
+      <button class="btn btn-primary" id="confirmBooking">Confirmar agendamento</button>
+    </div>
+  </section>
+</div>
+
+<a href="#" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Falar com a barbearia no WhatsApp">💬</a>
+
+<script src="../js/data.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/booking.js"></script>
+</body>
+</html>

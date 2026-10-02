@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Painel Administrativo | Fino de Garagem</title>
+<link rel="icon" href="../assets/logo.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+<div class="barber-stripe"></div>
+<div class="mobile-topbar">
+  <div class="brand"><img src="../assets/logo.png" alt="Fino de Garagem" class="brand-logo-img sidebar" /><span class="brand-name">FINO DE <span>GARAGEM</span></span></div>
+  <button class="nav-toggle sidebar-toggle" aria-label="Abrir menu"><span></span></button>
+</div>
+
+<div class="app-shell" id="adminApp">
+  <aside class="app-sidebar">
+    <div class="brand"><img src="../assets/logo.png" alt="Fino de Garagem" class="brand-logo-img sidebar" /><span class="brand-name">FINO DE <span>GARAGEM</span></span></div>
+    <nav class="sidebar-nav">
+      <a href="#" class="active" data-section-link="dashboard">📊 Dashboard</a>
+      <a href="#" data-section-link="agenda">📅 Agenda</a>
+      <a href="#" data-section-link="appointments">🗂️ Agendamentos</a>
+      <a href="#" data-section-link="clients">👥 Clientes</a>
+      <a href="#" data-section-link="services">✂️ Serviços</a>
+      <a href="#" data-section-link="hours">🕒 Horários</a>
+      <a href="#" data-section-link="blocks">🚫 Bloqueios</a>
+      <a href="#" data-section-link="finance">💵 Financeiro</a>
+      <a href="#" data-section-link="commissions">🤝 Comissões</a>
+      <a href="#" data-section-link="settings">⚙️ Configurações</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="avatar" data-user-initials></div>
+      <div class="who"><strong data-user-name></strong><span>Administrador</span></div>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn">Saída</button>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <!-- DASHBOARD -->
+    <section data-section="dashboard">
+      <div class="app-topbar"><div><h1>Dashboard</h1><p class="sub">Visão geral da barbearia.</p></div></div>
+
+      <h3 style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Hoje</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="label">Agendamentos</div><div class="value" id="dashTodayCount">0</div></div>
+        <div class="kpi-card"><div class="label">Concluídos</div><div class="value" id="dashTodayDone">0</div></div>
+        <div class="kpi-card"><div class="label">Faturamento</div><div class="value gold" id="dashTodayRevenue">R$ 0</div></div>
+        <div class="kpi-card"><div class="label">Próximo cliente</div><div class="value" style="font-size:16px;" id="dashNextClient">—</div></div>
+      </div>
+
+      <h3 style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:24px 0 12px;">Semana</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="label">Agendamentos</div><div class="value" id="dashWeekCount">0</div></div>
+        <div class="kpi-card"><div class="label">Faturamento</div><div class="value gold" id="dashWeekRevenue">R$ 0</div></div>
+        <div class="kpi-card"><div class="label">Serviço mais vendido</div><div class="value" style="font-size:15px;" id="dashWeekTopService">—</div></div>
+        <div class="kpi-card"><div class="label">Profissional destaque</div><div class="value" style="font-size:15px;" id="dashWeekTopPro">—</div></div>
+      </div>
+      <div class="panel" style="margin-top:16px;">
+        <div class="panel-head"><h3>Faturamento — últimos 7 dias</h3></div>
+        <div id="weekChart"></div>
+      </div>
+
+      <h3 style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:24px 0 12px;">Mês</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="label">Faturamento</div><div class="value gold" id="dashMonthRevenue">R$ 0</div></div>
+        <div class="kpi-card"><div class="label">Clientes atendidos</div><div class="value" id="dashMonthClients">0</div></div>
+        <div class="kpi-card"><div class="label">Ticket médio</div><div class="value" id="dashMonthAvgTicket">R$ 0</div></div>
+        <div class="kpi-card"><div class="label">Comissões</div><div class="value" id="dashMonthCommissions">R$ 0</div></div>
+      </div>
+    </section>
+
+    <!-- AGENDA -->
+    <section data-section="agenda" class="hide">
+      <div class="app-topbar">
+        <div><h1>Agenda</h1><p class="sub">Visão diária por profissional.</p></div>
+        <select id="agendaProfessionalSelect" style="background:var(--charcoal);border:1px solid var(--line);color:var(--bone);padding:10px 14px;border-radius:8px;"></select>
+      </div>
+      <div class="agenda-toolbar">
+        <div class="flex gap-12">
+          <button class="btn btn-outline btn-sm" id="adminAgendaPrev">‹</button>
+          <button class="btn btn-outline btn-sm" id="adminAgendaToday">Hoje</button>
+          <button class="btn btn-outline btn-sm" id="adminAgendaNext">›</button>
+        </div>
+        <strong id="adminAgendaDateLabel" style="color:var(--bone);"></strong>
+      </div>
+      <div class="panel" id="adminAgendaContainer"></div>
+    </section>
+
+    <!-- AGENDAMENTOS -->
+    <section data-section="appointments" class="hide">
+      <div class="app-topbar"><div><h1>Agendamentos</h1><p class="sub">Todos os agendamentos da barbearia.</p></div></div>
+      <div id="allAppointmentsWrap"></div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section data-section="clients" class="hide">
+      <div class="app-topbar"><div><h1>Clientes</h1><p class="sub">CRM simples com histórico e observações.</p></div></div>
+      <div id="clientsWrap"></div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section data-section="services" class="hide">
+      <div class="app-topbar">
+        <div><h1>Serviços</h1><p class="sub">Adicione, edite ou desative serviços.</p></div>
+        <button class="btn btn-primary" id="addServiceBtn">+ Novo serviço</button>
+      </div>
+      <div id="servicesWrap"></div>
+    </section>
+
+    <!-- HORÁRIOS -->
+    <section data-section="hours" class="hide">
+      <div class="app-topbar"><div><h1>Horário de funcionamento</h1><p class="sub">Defina os intervalos de atendimento e o horário de almoço de cada dia.</p></div></div>
+      <div id="hoursWrap"></div>
+    </section>
+
+    <!-- BLOQUEIOS -->
+    <section data-section="blocks" class="hide">
+      <div class="app-topbar">
+        <div><h1>Bloqueios</h1><p class="sub">Bloqueie horários, dias inteiros ou defina folgas.</p></div>
+        <button class="btn btn-primary" id="openAdminBlockModal">+ Bloquear horário</button>
+      </div>
+      <div id="blocksWrap"></div>
+    </section>
+
+    <!-- FINANCEIRO -->
+    <section data-section="finance" class="hide">
+      <div class="app-topbar">
+        <div><h1>Financeiro</h1><p class="sub">Faturamento, pagamentos e cancelamentos.</p></div>
+        <div class="flex gap-12" style="flex-wrap:wrap;">
+          <select id="financePeriodSelect" style="background:var(--charcoal);border:1px solid var(--line);color:var(--bone);padding:10px 14px;border-radius:8px;">
+            <option value="0">Hoje</option>
+            <option value="7">7 dias</option>
+            <option value="30" selected>30 dias</option>
+            <option value="custom">Personalizado</option>
+          </select>
+          <div class="flex gap-12 hide" id="financeCustomRange">
+            <input type="date" id="financeFrom" style="background:var(--charcoal);border:1px solid var(--line);color:var(--bone);padding:10px;border-radius:8px;" />
+            <input type="date" id="financeTo" style="background:var(--charcoal);border:1px solid var(--line);color:var(--bone);padding:10px;border-radius:8px;" />
+            <button class="btn btn-outline btn-sm" id="financeApplyCustom">Aplicar</button>
+          </div>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="label">Receita bruta</div><div class="value gold" id="financeGross">R$ 0</div></div>
+        <div class="kpi-card"><div class="label">Pagamentos confirmados</div><div class="value" id="financePaid">R$ 0</div></div>
+        <div class="kpi-card"><div class="label">Pagamentos pendentes</div><div class="value" id="financePending">R$ 0</div></div>
+        <div class="kpi-card"><div class="label">Cancelamentos</div><div class="value" id="financeCancelled">0</div></div>
+        <div class="kpi-card"><div class="label">Comissões</div><div class="value" id="financeCommissions">R$ 0</div></div>
+        <div class="kpi-card"><div class="label">Lucro líquido estimado</div><div class="value gold" id="financeNet">R$ 0</div></div>
+      </div>
+      <p class="integration-note" style="max-width:640px;">Valores calculados a partir dos agendamentos reais registrados neste protótipo (dados fictícios de demonstração). Em produção, a mesma lógica consulta o banco de dados real via API.</p>
+    </section>
+
+    <!-- COMISSÕES -->
+    <section data-section="commissions" class="hide">
+      <div class="app-topbar"><div><h1>Pagamento do funcionário</h1><p class="sub">Comissões calculadas automaticamente por atendimento concluído.</p></div></div>
+      <div id="commissionsWrap"></div>
+    </section>
+
+    <!-- CONFIGURAÇÕES -->
+    <section data-section="settings" class="hide">
+      <div class="app-topbar"><div><h1>Configurações</h1><p class="sub">Dados da barbearia exibidos no site público.</p></div></div>
+      <div class="panel" style="max-width:560px;">
+        <form id="settingsForm">
+          <div class="field"><label for="st-name">Nome da barbearia</label><input type="text" id="st-name" name="businessName" required /></div>
+          <div class="flex gap-12">
+            <div class="field" style="flex:2;"><label for="st-street">Rua</label><input type="text" id="st-street" name="street" required /></div>
+            <div class="field" style="flex:1;"><label for="st-number">Número</label><input type="text" id="st-number" name="number" required /></div>
+          </div>
+          <div class="flex gap-12">
+            <div class="field" style="flex:1;"><label for="st-neighborhood">Bairro</label><input type="text" id="st-neighborhood" name="neighborhood" required /></div>
+            <div class="field" style="flex:1;"><label for="st-city">Cidade</label><input type="text" id="st-city" name="city" required /></div>
+            <div class="field" style="flex:1;"><label for="st-state">UF</label><input type="text" id="st-state" name="state" maxlength="2" required /></div>
+          </div>
+          <div class="field"><label for="st-zip">CEP</label><input type="text" id="st-zip" name="zip" required /></div>
+          <div class="field"><label for="st-whatsapp">WhatsApp (DDI+DDD+número)</label><input type="text" id="st-whatsapp" name="whatsapp" required /></div>
+          <div class="flex gap-12">
+            <div class="field" style="flex:1;"><label for="st-rating">Nota (Google)</label><input type="number" id="st-rating" name="rating" step="0.1" min="0" max="5" /></div>
+            <div class="field" style="flex:1;"><label for="st-reviews">Nº de avaliações</label><input type="number" id="st-reviews" name="reviewsCount" min="0" /></div>
+          </div>
+          <button type="submit" class="btn btn-primary">Salvar configurações</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Modal: detalhe/status de agendamento -->
+<div class="modal-overlay" id="apptDetailModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Agendamento</h3><button class="modal-close" data-close-modal="apptDetailModal">&times;</button></div>
+    <div id="apptDetailBody"></div>
+    <button class="btn btn-primary btn-block mt-16" id="saveApptDetailBtn">Salvar</button>
+  </div>
+</div>
+
+<!-- Modal: detalhe de cliente -->
+<div class="modal-overlay" id="clientDetailModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Cliente</h3><button class="modal-close" data-close-modal="clientDetailModal">&times;</button></div>
+    <div id="clientDetailBody"></div>
+  </div>
+</div>
+
+<!-- Modal: serviço -->
+<div class="modal-overlay" id="serviceModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="serviceModalTitle">Serviço</h3><button class="modal-close" data-close-modal="serviceModal">&times;</button></div>
+    <form id="serviceForm">
+      <input type="hidden" name="id" />
+      <div class="field"><label>Nome</label><input type="text" name="name" required /></div>
+      <div class="flex gap-12">
+        <div class="field" style="flex:1;"><label>Preço (R$, vazio = Consultar)</label><input type="number" name="price" step="0.01" min="0" /></div>
+        <div class="field" style="flex:1;"><label>Duração (min)</label><input type="number" name="duration" min="5" step="5" required /></div>
+      </div>
+      <div class="field"><label>Categoria</label><input type="text" name="category" /></div>
+      <div class="field"><label>Descrição</label><textarea name="description" rows="2"></textarea></div>
+      <div class="field"><label><input type="checkbox" name="active" /> Serviço ativo</label></div>
+      <div class="flex gap-12">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="button" class="btn btn-danger" id="deleteServiceBtn">Excluir</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: bloqueio (admin) -->
+<div class="modal-overlay" id="adminBlockModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Bloquear horário</h3><button class="modal-close" data-close-modal="adminBlockModal">&times;</button></div>
+    <form id="adminBlockForm">
+      <div class="field"><label>Profissional</label><select id="blockProfessionalSelect" name="professionalId"></select></div>
+      <div class="field"><label>Data</label><input type="date" name="date" required /></div>
+      <div id="adminBlockTimeFields" class="flex gap-12">
+        <div class="field" style="flex:1;"><label>Início</label><input type="time" name="startTime" value="09:00" /></div>
+        <div class="field" style="flex:1;"><label>Fim</label><input type="time" name="endTime" value="10:00" /></div>
+      </div>
+      <div class="field"><label><input type="checkbox" name="fullDay" id="adminFullDayToggle" /> Bloquear dia inteiro</label></div>
+      <div class="field">
+        <label>Motivo</label>
+        <select name="reason">
+          <option>Compromisso pessoal</option>
+          <option>Manutenção</option>
+          <option>Folga</option>
+          <option>Horário reservado</option>
+          <option>Imprevisto</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Confirmar bloqueio</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: registrar pagamento de funcionário -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Registrar pagamento</h3><button class="modal-close" data-close-modal="paymentModal">&times;</button></div>
+    <form id="paymentForm">
+      <input type="hidden" name="professionalId" />
+      <div class="flex gap-12">
+        <div class="field" style="flex:1;"><label>Período início</label><input type="date" name="periodStart" required /></div>
+        <div class="field" style="flex:1;"><label>Período fim</label><input type="date" name="periodEnd" required /></div>
+      </div>
+      <div class="field"><label>Valor pago (R$)</label><input type="number" name="amountPaid" step="0.01" min="0" required /></div>
+      <div class="field"><label>Método</label>
+        <select name="method"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="transferencia">Transferência</option></select>
+      </div>
+      <div class="field"><label>Observação</label><textarea name="notes" rows="2"></textarea></div>
+      <button type="submit" class="btn btn-primary btn-block">Registrar pagamento</button>
+    </form>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/agenda.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+  document.getElementById("logoutBtn")?.addEventListener("click", () => { window.FDG.auth.logout(); location.href = "login.html"; });
+</script>
+</body>
+</html>

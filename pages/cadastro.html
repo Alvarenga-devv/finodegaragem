@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Criar conta | Fino de Garagem</title>
+<meta name="description" content="Crie sua conta na Barbearia Fino de Garagem e agende seus horários online." />
+<link rel="icon" href="../assets/logo.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+<div class="barber-stripe"></div>
+<div class="auth-shell">
+  <div class="auth-card">
+    <img src="../assets/logo.png" alt="Fino de Garagem" class="brand-logo-img" style="width:84px;height:84px;margin:0 auto 20px;" />
+    <h1>Criar conta</h1>
+    <p class="sub text-center text-muted">Cadastre-se para agendar e acompanhar seus horários.</p>
+
+    <div class="form-alert error" id="formAlert"></div>
+
+    <form id="registerForm" novalidate>
+      <div class="field">
+        <label for="name">Nome completo</label>
+        <input type="text" id="name" name="name" required placeholder="Seu nome" />
+        <span class="field-error">Informe seu nome.</span>
+      </div>
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required autocomplete="email" placeholder="seuemail@exemplo.com" />
+        <span class="field-error">Informe um e-mail válido.</span>
+      </div>
+      <div class="field">
+        <label for="phone">Telefone / WhatsApp</label>
+        <input type="tel" id="phone" name="phone" required placeholder="(31) 9 9999-9999" />
+        <span class="field-error">Informe um telefone válido.</span>
+      </div>
+      <div class="field">
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" required minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres" />
+        <span class="field-error">A senha deve ter ao menos 6 caracteres.</span>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Criar conta</button>
+    </form>
+
+    <p class="auth-switch">Já tem conta? <a href="login.html">Entrar</a></p>
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+(async function () {
+  await window.FDG.auth.ensureSeedPasswords();
+  const { auth, ui } = window.FDG;
+
+  document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const alertBox = document.getElementById("formAlert");
+    alertBox.classList.remove("show");
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const password = document.getElementById("password").value;
+
+    if (password.length < 6) {
+      alertBox.textContent = "A senha deve ter ao menos 6 caracteres.";
+      alertBox.classList.add("show");
+      return;
+    }
+
+    const result = await auth.registerClient({ name, email, phone, password });
+    if (!result.ok) {
+      alertBox.textContent = result.error;
+      alertBox.classList.add("show");
+      return;
+    }
+    ui.toast("Conta criada com sucesso!", "success");
+    location.href = "cliente.html";
+  });
+})();
+</script>
+</body>
+</html>

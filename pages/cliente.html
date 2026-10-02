@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Minha conta | Fino de Garagem</title>
+<link rel="icon" href="../assets/logo.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+<div class="barber-stripe"></div>
+<div class="mobile-topbar">
+  <div class="brand"><img src="../assets/logo.png" alt="Fino de Garagem" class="brand-logo-img sidebar" /><span class="brand-name">FINO DE <span>GARAGEM</span></span></div>
+  <button class="nav-toggle sidebar-toggle" aria-label="Abrir menu"><span></span></button>
+</div>
+
+<div class="app-shell" id="clientApp">
+  <aside class="app-sidebar">
+    <div class="brand"><img src="../assets/logo.png" alt="Fino de Garagem" class="brand-logo-img sidebar" /><span class="brand-name">FINO DE <span>GARAGEM</span></span></div>
+    <nav class="sidebar-nav">
+      <a href="#" class="active" data-tab-target="tab-dashboard">🏠 Início</a>
+      <a href="#" data-tab-target="tab-history">🗂️ Histórico</a>
+      <a href="#" data-tab-target="tab-profile">👤 Meu perfil</a>
+      <a href="agendamento.html">📅 Agendar</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="avatar" data-user-initials></div>
+      <div class="who"><strong data-user-name></strong><span>Cliente</span></div>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn">Saída</button>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <div class="app-topbar">
+      <div>
+        <h1 id="greetingTitle">Olá, <span id="greetingName"></span> 👋</h1>
+        <p class="sub">Acompanhe seus agendamentos e seu histórico na Fino de Garagem.</p>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-dashboard">
+      <div id="nextAppointmentWrap"></div>
+      <div id="barberPassWrap" class="mt-24"></div>
+    </div>
+
+    <div class="tab-panel hide" id="tab-history">
+      <div class="panel-head"><h3 style="font-family:var(--font-display);text-transform:uppercase;font-size:20px;">Histórico de agendamentos</h3></div>
+      <div id="historyWrap"></div>
+    </div>
+
+    <div class="tab-panel hide" id="tab-profile">
+      <div class="panel" style="max-width:480px;">
+        <h3 style="font-family:var(--font-display);text-transform:uppercase;font-size:18px;margin-bottom:16px;">Editar perfil</h3>
+        <form id="profileForm">
+          <div class="field"><label for="pf-name">Nome</label><input type="text" id="pf-name" name="name" required /></div>
+          <div class="field"><label for="pf-email">E-mail</label><input type="email" id="pf-email" name="email" disabled /></div>
+          <div class="field"><label for="pf-phone">Telefone</label><input type="tel" id="pf-phone" name="phone" /></div>
+          <button type="submit" class="btn btn-primary">Salvar alterações</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<nav class="bottom-nav">
+  <a href="#" class="active" data-tab-target="tab-dashboard">🏠<span>Início</span></a>
+  <a href="agendamento.html">📅<span>Agendar</span></a>
+  <a href="#" data-tab-target="tab-history">🗂️<span>Histórico</span></a>
+  <a href="#" data-tab-target="tab-profile">👤<span>Perfil</span></a>
+</nav>
+
+<script src="../js/data.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/client.js"></script>
+<script>
+  document.getElementById("logoutBtn")?.addEventListener("click", () => { window.FDG.auth.logout(); location.href = "login.html"; });
+</script>
+</body>
+</html>

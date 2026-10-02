@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agendamento confirmado | Fino de Garagem</title>
+<link rel="icon" href="../assets/logo.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand">
+      <img src="../assets/logo.png" alt="Fino de Garagem" class="brand-logo-img sidebar" />
+      <span class="brand-name">FINO DE <span>GARAGEM</span></span>
+    </a>
+    <nav class="main-nav"><a href="../index.html">Início</a></nav>
+  </div>
+</header>
+
+<div class="booking-shell" id="confirmRoot" style="max-width:520px;"></div>
+
+<script src="../js/data.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  const { db, ui } = window.FDG;
+  const params = new URLSearchParams(location.search);
+  const appt = db.getAppointment(params.get("appointment"));
+  const root = document.getElementById("confirmRoot");
+  if (!appt) {
+    root.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Agendamento não encontrado.</p></div>`;
+    return;
+  }
+  const service = db.getService(appt.serviceId);
+  const pro = db.getProfessional(appt.professionalId);
+
+  root.innerHTML = `
+    <div class="confirm-success">
+      <div class="check">✓</div>
+      <h2>Agendamento confirmado</h2>
+      <div class="confirm-ticket">
+        <div class="summary-row"><span class="label">Serviço</span><span class="value">${ui.escapeHtml(service.name)}</span></div>
+        <div class="summary-row"><span class="label">Data</span><span class="value">${ui.formatDate(appt.date)}</span></div>
+        <div class="summary-row"><span class="label">Horário</span><span class="value">${appt.startTime}</span></div>
+        <div class="summary-row"><span class="label">Profissional</span><span class="value">${ui.escapeHtml(pro.displayName)}</span></div>
+        <div class="summary-row total"><span class="label">Valor</span><span class="value">${ui.formatBRL(appt.price)}</span></div>
+      </div>
+      <div class="hero-ctas" style="justify-content:center;">
+        <a class="btn btn-outline" id="addCalendarBtn">Adicionar ao calendário</a>
+        <a class="btn btn-whatsapp" id="openWhatsappBtn">Abrir no WhatsApp</a>
+        <a class="btn btn-primary" href="cliente.html">Ver meu agendamento</a>
+      </div>
+    </div>`;
+
+  document.getElementById("openWhatsappBtn").href = ui.whatsappLink(
+    `Olá! Confirmei meu agendamento de ${service.name} para ${appt.date} às ${appt.startTime}. Gostaria de confirmar os detalhes.`
+  );
+
+  document.getElementById("addCalendarBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    const start = appt.date.replace(/-/g, "") + "T" + appt.startTime.replace(":", "") + "00";
+    const end = appt.date.replace(/-/g, "") + "T" + appt.endTime.replace(":", "") + "00";
+    const text = encodeURIComponent(`${service.name} - Fino de Garagem`);
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}`;
+    window.open(url, "_blank");
+  });
+})();
+</script>
+</body>
+</html>

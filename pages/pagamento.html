@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pagamento | Fino de Garagem</title>
+<link rel="icon" href="../assets/logo.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand">
+      <img src="../assets/logo.png" alt="Fino de Garagem" class="brand-logo-img sidebar" />
+      <span class="brand-name">FINO DE <span>GARAGEM</span></span>
+    </a>
+    <nav class="main-nav"><a href="../index.html">Início</a></nav>
+  </div>
+</header>
+
+<div class="booking-shell" id="payRoot" style="max-width:520px;">
+  <h2 class="text-center" style="font-size:28px;margin-bottom:8px;">Pagamento</h2>
+  <p class="text-center text-muted" id="payServiceName" style="margin-bottom:4px;"></p>
+  <p class="text-center" style="font-family:var(--font-display);font-size:28px;color:var(--gold);" id="payAmount"></p>
+
+  <div class="pix-box hide" id="pixSection">
+    <div class="pix-qr" aria-hidden="true"></div>
+    <p class="text-muted" style="font-size:13px;">Escaneie o QR Code com o app do seu banco ou copie o código abaixo.</p>
+    <div class="pix-code" id="pixCode"></div>
+    <button class="btn btn-outline btn-sm" id="copyPixBtn">Copiar código Pix</button>
+    <div class="mt-16"><span class="text-muted" style="font-size:12px;">Expira em</span><div class="pix-timer" id="pixTimer">15:00</div></div>
+    <button class="btn btn-primary btn-block mt-16" id="simulateCheckStatus">Verificar status do pagamento</button>
+    <p class="integration-note">
+      Arquitetura preparada para integração com gateway de pagamento (ex.: Mercado Pago). QR Code, código copia-e-cola e confirmação automática via webhook devem ser fornecidos pelo gateway real — credenciais em variáveis de ambiente no backend, nunca no front-end. Ver <code>/backend/README.md</code>.
+    </p>
+  </div>
+
+  <div class="panel hide" id="cardSection">
+    <p class="text-muted" style="font-size:14px;">O checkout de cartão será exibido aqui através do gateway de pagamento integrado (Checkout Transparente/Pro). Nenhum dado de cartão é processado neste protótipo.</p>
+    <div class="integration-note">Ponto de integração: TODO_GATEWAY — inserir SDK/checkout do gateway escolhido.</div>
+  </div>
+
+  <div class="panel hide" id="localSection">
+    <p class="text-muted" style="font-size:14px;">Perfeito! O pagamento será feito diretamente na barbearia, no momento do atendimento.</p>
+  </div>
+
+  <button class="btn btn-primary btn-block mt-24" id="goToConfirmation">Ver meu agendamento</button>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/payments.js"></script>
+</body>
+</html>
